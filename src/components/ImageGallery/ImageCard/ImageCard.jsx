@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageModal from "../../ImageModal/ImageModal";
-import css from './ImageCard.module.css'
+import css from "./ImageCard.module.css";
 
 export default function ImageCard({ photos }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  useEffect(() => {
+    const body = document.querySelector("body");
+    isOpenModal
+      ? (body.style.overflow = "hidden")
+      : (body.style.overflow = "auto");
+  }, [isOpenModal]);
   function openModal() {
     setIsOpenModal(true);
   }
@@ -22,7 +28,6 @@ export default function ImageCard({ photos }) {
         photo={photos}
         modalIsOpen={isOpenModal}
         modalIsClosed={closeModal}
-        
       />
     </div>
   );
