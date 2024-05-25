@@ -29,11 +29,13 @@ export default function ImageModal({ photo, modalIsOpen, modalIsClosed }) {
       onRequestClose={modalIsClosed}
       shouldCloseOnOverlayClick={true}
     >
-      <img
-        className={css.imageModal}
-        src={photo.urls.regular}
-        alt={photo.alt_description}
-      />
+      {photo && (
+        <img
+          className={css.imageModal}
+          src={photo.urls.regular}
+          alt={photo.alt_description}
+        />
+      )}
     </Modal>
   );
 }

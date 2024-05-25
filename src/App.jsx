@@ -20,7 +20,6 @@ function App() {
   function openModal(currentImage) {
     setIsOpenModal(true);
     setImage(currentImage);
-    console.log(currentImage);
   }
   function closeModal() {
     setIsOpenModal(false);
@@ -71,13 +70,12 @@ function App() {
       {photos.length > 0 && !isLoading && <LoadMoreBtn click={loadMore} />}
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
-      {photos.length > 0 && (
-        <ImageModal
-          photo={image}
-          modalIsOpen={isOpenModal}
-          modalIsClosed={closeModal}
-        />
-      )}
+
+      <ImageModal
+        photo={image}
+        modalIsOpen={isOpenModal}
+        modalIsClosed={closeModal}
+      />
     </div>
   );
 }
