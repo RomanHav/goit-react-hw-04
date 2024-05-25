@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import css from './SearchBar.module.css'
+import css from "./SearchBar.module.css";
 
 export default function SearchBar({ onSubmit }) {
   const [search, setSearch] = useState("");
@@ -9,7 +9,7 @@ export default function SearchBar({ onSubmit }) {
     event.preventDefault();
     if (search.trim() === "") {
       toast("Field must be fulfilled");
-      
+      return;
     }
     onSubmit(search);
     setSearch("");
@@ -31,9 +31,7 @@ export default function SearchBar({ onSubmit }) {
           value={search}
           onChange={handleChange}
         />
-        <button type="submit">
-          Search
-        </button>
+        <button type="submit">Search</button>
       </form>
       <Toaster />
     </header>

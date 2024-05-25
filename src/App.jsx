@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
 import axios from "axios";
@@ -6,6 +6,7 @@ import ImageGallery from "./components/ImageGallery/ImageGallery";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
+import ImageModal from "./components/ImageModal/ImageModal";
 
 function App() {
   const [photos, setPhotos] = useState([]);
@@ -13,6 +14,18 @@ function App() {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [image, setImage] = useState();
+
+  function openModal(currentImage) {
+    setIsOpenModal(true);
+    setImage(currentImage);
+    console.log(currentImage);
+  }
+  function closeModal() {
+    setIsOpenModal(false);
+  }
+
   const fetchPhotos = async (searchQuery, pageNumber) => {
     setIsLoading(true); // Start loading
     try {
@@ -24,9 +37,16 @@ function App() {
       setIsError(true);
       return [];
     } finally {
-      setIsLoading(false); // End loading
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const body = document.querySelector("body");
+    isOpenModal
+      ? (body.style.overflow = "hidden")
+      : (body.style.overflow = "auto");
+  }, [isOpenModal]);
 
   const handleSearch = async (searchQuery) => {
     setQuery(searchQuery);
@@ -45,10 +65,19 @@ function App() {
   return (
     <div className="container">
       <SearchBar onSubmit={handleSearch} />
-      {photos.length > 0 && <ImageGallery photos={photos} />}
+      {photos.length > 0 && (
+        <ImageGallery photos={photos} openModal={openModal} />
+      )}
       {photos.length > 0 && !isLoading && <LoadMoreBtn click={loadMore} />}
       {isLoading && <Loader />}
-      {isError && <ErrorMessage/>}
+      {isError && <ErrorMessage />}
+      {photos.length > 0 && (
+        <ImageModal
+          photo={image}
+          modalIsOpen={isOpenModal}
+          modalIsClosed={closeModal}
+        />
+      )}
     </div>
   );
 }
